@@ -91,5 +91,41 @@ async function showAthleteData(athlete) {
 
 }
 
+function addButtonListners() {
+    const addAnAthleteButton = document.getElementById("addAnAthleteButton")
+    addAnAthleteButton.addEventListener("click", () => {
+        // Show add an athlete section
+        const addAnAthleteSection = document.getElementById("addAnAthleteSection")
+        addAnAthleteSection.style.display = "block"
+
+        // Hide athletes section
+        const athleteListSection = document.getElementById("athletesListSection");
+        athleteListSection.style.display = "none"
+    })
+
+    const backToAthletesButton = document.getElementById("backToAthletesButton");
+    backToAthletesButton.addEventListener("click", () => {
+        // Show athletes section
+        const athleteListSection = document.getElementById("athletesListSection");
+        athleteListSection.style.display = "block"
+
+        // Hide add an athlete section
+        const addAnAthleteSection = document.getElementById("addAnAthleteSection")
+        addAnAthleteSection.style.display = "none"
+    })
+
+    const backToAllAthletesButton2 = document.getElementById("backToAllAthletesButton2");
+    backToAllAthletesButton2.addEventListener('click', () => {
+        // Show athletes section
+        const athleteListSection = document.getElementById("athletesListSection");
+        athleteListSection.style.display = "block"
+
+        // Hide athlete data section
+        const athleteDataSection = document.getElementById("athleteDataSection")
+        athleteDataSection.style.display = "none"
+    })
+}
+
 document.addEventListener('DOMContentLoaded', listAthletes);
 document.addEventListener('DOMContentLoaded', addAthlete);
+document.addEventListener('DOMContentLoaded', addButtonListners);
