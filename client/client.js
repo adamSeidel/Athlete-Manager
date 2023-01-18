@@ -48,6 +48,34 @@ async function addAthlete() {
     });
 };
 
+async function addRace() {
+    const raceForm = document.getElementById('raceSubmit');
+    raceForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const data = new FormData(raceForm);
+
+        // Get athlete name
+        const athleteName = document.getElementById('athleteName').innerHTML;
+        
+        // Add data to FormData at https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
+        data.append('athleteName', athleteName)
+        
+
+        // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
+        const dataJSON = JSON.stringify(Object.fromEntries(data));
+
+        const response = await fetch(endpointRoot + "newRace", {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: dataJSON
+        });
+        showAthleteData(athleteName);
+
+    });
+}
+
 function addAthleteClick() {
     let athletes = document.querySelectorAll(".athlete")
 
@@ -100,9 +128,7 @@ function addRaceClick(){
     const races = document.querySelectorAll(".race")
     const athlete = document.getElementById("athleteName").innerHTML
 
-    console.log(races)
     for (const race of races) {
-        console.log(race, athlete)
         race.addEventListener('click', () => showRaceData(athlete, race.id))
     };
 };
@@ -116,8 +142,6 @@ async function showRaceData(athlete, race) {
     const raceDataSection = document.getElementById("raceDataSection");
     raceDataSection.style.display = "block";
 
-    console.log(athlete, race)
-    console.log()
     const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + "/" + race);
     const raceResponseText = await raceResponse.text();
     const raceData = JSON.parse(raceResponseText);
@@ -171,7 +195,7 @@ function addButtonListners() {
         // Hide athlete data section
         const athleteDataSection = document.getElementById("athleteDataSection")
         athleteDataSection.style.display = "none"
-    })
+    });
 
     const backToAthleteRaceData = document.getElementById('backToAthleteData');
     backToAthleteRaceData.addEventListener('click', () => {
@@ -180,11 +204,23 @@ function addButtonListners() {
         athleteDataSection.style.display = "block"
 
         // Hide race data section
-        const raceDataSection = document.getElementById('raceDataSection')
+        const raceDataSection = document.getElementById('raceDataSection');
         raceDataSection.style.display = "none";
-    })
+    });
+
+    const addRaceButton = document.getElementById('addRace')
+    addRaceButton.addEventListener('click', () => {
+        // Show add race section
+        const addRaceSection = document.getElementById('addRaceSection');
+        addRaceSection.style.display = "block"
+
+        // Hide athlete data section
+        const athleteDataSection = document.getElementById("athleteDataSection")
+        athleteDataSection.style.display = "none"
+    });
 }
 
 document.addEventListener('DOMContentLoaded', listAthletes);
 document.addEventListener('DOMContentLoaded', addAthlete);
+document.addEventListener('DOMContentLoaded', addRace);
 document.addEventListener('DOMContentLoaded', addButtonListners);

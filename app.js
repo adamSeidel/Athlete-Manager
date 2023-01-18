@@ -55,6 +55,23 @@ app.get('/races/:athleteID', function (req, resp) {
     const races = Object.keys(athletes[athleteID]["races"]);
     
     resp.send(races)
-})
+});
+
+app.post('/newRace', function (req, resp) {
+    const athleteName = req.body.athleteName;
+    const raceName = req.body.raceName;
+    const distance = req.body.distance;
+    const time = req.body.time;
+    const position = req.body.position;
+    const comments = req.body.comments;
+
+    athletes[athleteName]["races"][raceName] = {"distance": distance, "finishingTime": time, "finishingPosition": position,
+"comments": comments};
+
+    athletes[athleteName]["numberOfRaces"] += 1
+
+    fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
+    resp.send(athletes);
+});
 
 module.exports = app;

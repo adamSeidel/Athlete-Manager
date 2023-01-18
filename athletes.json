@@ -1,10 +1,1 @@
-{"Adam":{"numberOfRaces":5,"races":{
-    "Boston":{"distance":"42km",
-    "finishingTime":"3:00:68.38",
-    "finishingPosition":"40/1000",
-    "comments":"Race felt good. Set off too fast and paid for it towards the end of the race"},
-    "London":{"distance": "800m",
-"finishingTime":"0:00:03",
-"finishingPosition":"1st",
-"comments":"I won the race!"}
-}},"Ed":{"numberOfRaces":4},"Cieran":{"numberOfRaces":3},"Josh":{"numberOfRaces":0},"Test1 Test2":{"numberOfRaces":0}}
+{"Adam Seidel":{"numberOfRaces":0}}
