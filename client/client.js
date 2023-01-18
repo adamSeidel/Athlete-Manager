@@ -108,6 +108,14 @@ function addRaceClick(){
 };
 
 async function showRaceData(athlete, race) {
+    // Hide the athlete data section
+    const athleteDataSection = document.getElementById("athleteDataSection");
+    athleteDataSection.style.display = "none"
+
+    // Show the race data section
+    const raceDataSection = document.getElementById("raceDataSection");
+    raceDataSection.style.display = "block";
+
     console.log(athlete, race)
     console.log()
     const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + "/" + race);
