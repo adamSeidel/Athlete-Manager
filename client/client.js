@@ -122,7 +122,20 @@ async function showRaceData(athlete, race) {
     const raceResponseText = await raceResponse.text();
     const raceData = JSON.parse(raceResponseText);
 
-    console.log(raceData);
+    const raceAthlete = document.getElementById('raceAthlete');
+    raceAthlete.innerHTML = athlete;
+
+    const distance = document.getElementById('distance');
+    distance.innerHTML = raceData["distance"];
+
+    const time = document.getElementById('time');
+    time.innerHTML = raceData["finishingTime"];
+
+    const position = document.getElementById('position');
+    position.innerHTML = raceData["finishingPosition"];
+
+    const comments = document.getElementById('comments');
+    comments.innerHTML = raceData["comments"];
 
 }
 
