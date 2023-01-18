@@ -1,7 +1,9 @@
-{"Adam": {
-    "numberOfRaces": 5},
-"Ed": {
+{"0001": {
+    "name": "Adam", "numberOfRaces": 5},
+"0002": {
+    "name": "Ed",
     "numberOfRaces": 4},
-"Cieran": {
+"0003": {
+    "name": "Cieran",
     "numberOfRaces": 3}
 }

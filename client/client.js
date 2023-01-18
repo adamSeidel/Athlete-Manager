@@ -10,11 +10,11 @@ async function listAthletes() {
     for (const athlete of athletesKeys){
         let newAthlete = document.createElement('li')
         newAthlete.setAttribute('class', 'list-group-item list-group-item-action d-flex justify-content-between align-items-center');
-        newAthlete.innerHTML = athlete
+        newAthlete.innerHTML = athlete.name
 
         let spanElement = document.createElement('span')
         spanElement.setAttribute('class', "badge bg-primary rounded-pill")
-        let numberOfRacesRequest = await fetch(endpointRoot + "athlete/numberOfRaces/" + athlete)
+        let numberOfRacesRequest = await fetch(endpointRoot + "athlete/numberOfRaces/" + athlete.id)
         let numberOfRaces = await numberOfRacesRequest.text();
         spanElement.innerHTML = numberOfRaces + ' entries';
 
