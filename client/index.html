@@ -89,6 +89,8 @@
                         </ul>
                     </div>
 
+                    <button id="addRace" class="btn btn-primary col-6 mb-3">Add a Race</button>
+
                     <button id="backToAllAthletesButton2" class="btn btn-primary col-6">View all Athletes</button>
                 </div>
 
@@ -120,6 +122,43 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <button id="backToAthleteData" class="btn btn-primary col-6">Back to Athlete Race Data</button>
+                </div>
+
+                <div id="addRaceSection" class="row">
+                    <hr class="col-3 col-md-2 mb-3">
+                    <h2>Add A New Race</h2>
+                    <p>Adding a new race for</p>
+
+                    <form id="raceSubmit" class="col-6 mb-5">
+                        <div class="mb-3">
+                            <label for="raceName" class="form-label">Race Name</label>
+                            <input name="raceName" type="text" class="form-control" id="raceName" aria-describedby="raceNameHelp" placeholder="Usain Bolt">
+                            <div id="raceNameHelp" class="form-text">Enter the name of the new race</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="distance" class="form-label">Distance</label>
+                            <input name="distance" type="text" class="form-control" id="distance" aria-describedby="distanceHelp" placeholder="100m">
+                            <div id="distanceHelp" class="form-text">Enter the distance of the new race</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time" class="form-label">Time</label>
+                            <input name="time" type="text" class="form-control" id="time" aria-describedby="timeHelp" placeholder="9.58 seconds">
+                            <div id="timeHelp" class="form-text">Enter the time of the new race</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="position" class="form-label">Position</label>
+                            <input name="position" type="text" class="form-control" id="position" aria-describedby="positionHelp" placeholder="1st">
+                            <div id="positonHelp" class="form-text">Enter the position of the new race</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comments</label>
+                            <textarea name="comments" type="text" class="form-control" id="comments" aria-describedby="commentsHelp" placeholder="Brilliant start to the race. Quick out of the blocks and driving nicely at 30m."></textarea>
+                            <div id="commentsHelp" class="form-text">Enter any comments about the race</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </main>
 

@@ -172,6 +172,17 @@ function addButtonListners() {
         const athleteDataSection = document.getElementById("athleteDataSection")
         athleteDataSection.style.display = "none"
     })
+
+    const backToAthleteRaceData = document.getElementById('backToAthleteData');
+    backToAthleteRaceData.addEventListener('click', () => {
+        // Show athlete data section
+        const athleteDataSection = document.getElementById("athleteDataSection")
+        athleteDataSection.style.display = "block"
+
+        // Hide race data section
+        const raceDataSection = document.getElementById('raceDataSection')
+        raceDataSection.style.display = "none";
+    })
 }
 
 document.addEventListener('DOMContentLoaded', listAthletes);
