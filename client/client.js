@@ -48,7 +48,7 @@ async function addAthlete() {
     });
 };
 
-async function addAthleteClick() {
+function addAthleteClick() {
     let athletes = document.querySelectorAll(".athlete")
 
     for (const athlete of athletes) {
@@ -69,6 +69,10 @@ async function showAthleteData(athlete) {
     athleteDataSection = document.getElementById("athleteDataSection");
     athleteDataSection.style.display = "block";
 
+    // Show athlete name on the screen
+    const athleteName = document.getElementById("athleteName");
+    athleteName.innerHTML = athlete;
+
     // Select the race date list
     const raceResponse = await fetch(endpointRoot + "races/" + athlete)
     const racesText = await raceResponse.text();
@@ -88,6 +92,29 @@ async function showAthleteData(athlete) {
 
         racesList.appendChild(newRace);
     };
+
+    addRaceClick();
+}
+
+function addRaceClick(){
+    const races = document.querySelectorAll(".race")
+    const athlete = document.getElementById("athleteName").innerHTML
+
+    console.log(races)
+    for (const race of races) {
+        console.log(race, athlete)
+        race.addEventListener('click', () => showRaceData(athlete, race.id))
+    };
+};
+
+async function showRaceData(athlete, race) {
+    console.log(athlete, race)
+    console.log()
+    const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + "/" + race);
+    const raceResponseText = await raceResponse.text();
+    const raceData = JSON.parse(raceResponseText);
+
+    console.log(raceData);
 
 }
 
