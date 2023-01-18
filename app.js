@@ -9,6 +9,9 @@ app.use(express.static(path.join(__dirname, 'client')));
 
 const athletes = require(fileNameForJSON);
 
+//Keep track of the next free ID number
+console.log(Object.keys(athletes).length)
+
 app.get('/athletes', function (req, resp) {
     const athleteKeys = Object.keys(athletes);
     const idsAndNames = []
@@ -25,5 +28,10 @@ app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
     const numberOfRaces = athleteData["numberOfRaces"];
     resp.send("" + numberOfRaces);
 });
+
+app.post('/athlete/new', function (req, resp) {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+})
 
 module.exports = app;
