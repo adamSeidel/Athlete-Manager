@@ -58,15 +58,15 @@
                     <h2>Add an athlete</h2>
                     <p>Add a new athlete to the database.</p>
 
-                    <form>
+                    <form id="athleteSumbit" class="col-6">
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" aria-describedby="firstNameHelp">
+                            <input name="firstName" type="text" class="form-control" id="firstName" aria-describedby="firstNameHelp">
                             <div id="firstNameHelp" class="form-text">Enter the first name of the new athlete</div>
                         </div>
                         <div class="mb-3">
                             <label for="secondName" class="form-label">Second Name</label>
-                            <input type="text" class="form-control" id="secondName" aria-describedby="secondNameHelp">
+                            <input name="lastName" type="text" class="form-control" id="secondName" aria-describedby="secondNameHelp">
                             <div id="secondNameHelp" class="form-text">Enter the second name of the new athlete</div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
