@@ -14,4 +14,11 @@ app.get('/athletes', function (req, resp) {
     resp.send(athleteKeys)
 });
 
+app.get('/athlete/numberOfRaces/:athleteName', function (req, resp) {
+    const athleteName = req.params.athleteName;
+    const athleteData = athletes[athleteName];
+    const numberOfRaces = athleteData["numberOfRaces"];
+    resp.send("" + numberOfRaces);
+});
+
 module.exports = app;
