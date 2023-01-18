@@ -11,6 +11,7 @@ async function listAthletes() {
     for (const athlete of athletesKeys){
         let newAthlete = document.createElement('li')
         newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
+        newAthlete.setAttribute('id', athlete)
         newAthlete.innerHTML = athlete
 
         let spanElement = document.createElement('span')
@@ -49,16 +50,45 @@ async function addAthlete() {
 
 async function addAthleteClick() {
     let athletes = document.querySelectorAll(".athlete")
-    console.log(athletes)
 
     for (const athlete of athletes) {
-        console.log("Done")
-        athlete.addEventListener("click", () => console.log("Showig athlete data"));
+        athlete.addEventListener("click", () => showAthleteData(athlete.id));
     }
 }
 
-async function showAthleteData() {
+async function showAthleteData(athlete) {
+    // Hide the athletes list section of the page
+    athleteList = document.getElementById("athletesListSection");
+    athleteList.style.display = "none";
+
+    // Hide the add an athlete section of the page
+    addAthlete = document.getElementById("addAnAthleteSection");
+    addAthlete.style.display = "none";
+
+    // Show the athlete data section of the page
+    athleteDataSection = document.getElementById("athleteDataSection");
+    athleteDataSection.style.display = "block";
+
+    // Select the race date list
+    const raceResponse = await fetch(endpointRoot + "races/" + athlete)
+    const racesText = await raceResponse.text();
+    const races = JSON.parse(racesText);
     
+    // Add the athletes races to the page
+    let racesList = document.querySelector("#raceList ul");
+
+    // Make sure list is empty to avoid adding duplicates
+    racesList.innerHTML = "";
+
+    for (const race of races) {
+        let newRace = document.createElement('li')
+        newRace.setAttribute('class', 'race list-group-item list-group-item-action d-flex justify-content-between align-items-center');
+        newRace.setAttribute('id', race)
+        newRace.innerHTML = race
+
+        racesList.appendChild(newRace);
+    };
+
 }
 
 document.addEventListener('DOMContentLoaded', listAthletes);

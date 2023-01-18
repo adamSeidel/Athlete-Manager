@@ -46,15 +46,15 @@ app.get('/athlete/:athlete/:raceName', function (req, resp) {
     const raceData = athletes[athlete]["races"];
     const race = raceData[raceName];
 
-    resp.send('' + race);
+    resp.send(race);
 });
 
 app.get('/races/:athleteID', function (req, resp) {
     let athleteID = req.params.athleteID
 
-    const raceData = athletes[athlete]["races"];
+    const races = Object.keys(athletes[athleteID]["races"]);
     
-    resp.send('' + raceData)
+    resp.send(races)
 })
 
 module.exports = app;
