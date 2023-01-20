@@ -15,8 +15,12 @@ app.use(express.static(path.join(__dirname, 'client')));
 
 const athletes = require(fileNameForJSON);
 
+// GET root to return the names of all athletes
 app.get('/athletes', function (req, resp) {
+    // Create array of all keys in the athlets JSON file
     const athleteKeys = Object.keys(athletes);
+
+    // Send the array of athlete names as response
     resp.send(athleteKeys);
 });
 
