@@ -72,6 +72,11 @@ async function addRace() {
             body: dataJSON
         });
         showAthleteData(athleteName);
+        raceForm.reset()
+
+        // Hide the add new race section
+        addRaceSection = document.getElementById("addRaceSection");
+        addRaceSection.style.display = "none";
 
     });
 }
@@ -101,8 +106,10 @@ async function showAthleteData(athlete) {
     const athleteName = document.getElementById("athleteName");
     athleteName.innerHTML = athlete;
 
+    athlete = athlete.split(" ")
+
     // Select the race date list
-    const raceResponse = await fetch(endpointRoot + "races/" + athlete)
+    const raceResponse = await fetch(endpointRoot + "races/" + athlete[0] + "/" + athlete[1]);
     const racesText = await raceResponse.text();
     const races = JSON.parse(racesText);
     
@@ -191,6 +198,8 @@ function addButtonListners() {
         // Show athletes section
         const athleteListSection = document.getElementById("athletesListSection");
         athleteListSection.style.display = "block"
+
+        listAthletes();
 
         // Hide athlete data section
         const athleteDataSection = document.getElementById("athleteDataSection")
