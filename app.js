@@ -1,3 +1,7 @@
+// Further reading on response codes https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+'use strict';
+
 const express = require('express');
 const app = express();
 
@@ -16,24 +20,45 @@ app.get('/athletes', function (req, resp) {
     resp.send(athleteKeys);
 });
 
-app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
-    const athleteID = req.params.athleteID;
-    const athleteData = athletes[athleteID];
-    const numberOfRaces = athleteData.numberOfRaces;
-    resp.send('' + numberOfRaces);
+app.get('/athlete/numberOfRaces/:firstName/:secondName', function (req, resp) {
+    const firstName = req.params.firstName;
+    const secondName = req.params.secondName;
+
+    const athleteID = firstName + " " + secondName
+
+    try {
+        const athleteData = athletes[athleteID];
+        const numberOfRaces = athleteData.numberOfRaces;
+        resp.send('' + numberOfRaces);
+    } catch (err) {
+        // How to specify error code in Express? https://stackoverflow.com/questions/10563644/how-to-specify-http-error-code-using-express-js
+        resp.status(404);
+        resp.send('The requested athlete could not be found in the system');
+    };
 });
 
 app.post('/athlete/new', function (req, resp) {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
 
-    const name = firstName + ' ' + lastName;
-    const numberOfRaces = 0;
+    if (firstName === undefined || lastName == undefined) {
+        resp.status(404);
+        resp.send('Athlete name is incomplete')
+    } else {
+        const name = firstName + ' ' + lastName;
 
-    athletes[name] = { numberOfRaces, races: {} };
-    fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
+        if (Object.keys(athletes).includes(name)) {
+            resp.status(404);
+            resp.send('Athlete is already in the data base')
+        } else {
+            const numberOfRaces = 0;
 
-    resp.send(athletes);
+            athletes[name] = { numberOfRaces, races: {} };
+            fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
+
+            resp.send(athletes);
+        };
+    };
 });
 
 app.get('/athlete/:athlete/:raceName', function (req, resp) {

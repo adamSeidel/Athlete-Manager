@@ -1,3 +1,5 @@
+'use strict';
+
 const endpointRoot = 'http://127.0.0.1:8090/';
 
 async function listAthletes () {
@@ -16,7 +18,9 @@ async function listAthletes () {
 
         const spanElement = document.createElement('span');
         spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
-        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
+
+        const athleteName = athlete.split(" ")
+        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athleteName[0]}/${athleteName[1]}`);
         const numberOfRaces = await numberOfRacesRequest.text();
         spanElement.innerHTML = numberOfRaces + ' entries';
 
@@ -36,6 +40,7 @@ async function addAthlete () {
         // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
         const dataJSON = JSON.stringify(Object.fromEntries(data));
 
+        // eslint-disable-next-line no-unused-vars
         const response = await fetch(endpointRoot + 'athlete/new', {
             method: 'POST',
             headers: {
@@ -63,6 +68,7 @@ async function addRace () {
         // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
         const dataJSON = JSON.stringify(Object.fromEntries(data));
 
+        // eslint-disable-next-line no-unused-vars
         const response = await fetch(endpointRoot + 'newRace', {
             method: 'POST',
             headers: {
@@ -84,15 +90,15 @@ function addAthleteClick () {
 
 async function showAthleteData (athlete) {
     // Hide the athletes list section of the page
-    athleteList = document.getElementById('athletesListSection');
+    const athleteList = document.getElementById('athletesListSection');
     athleteList.style.display = 'none';
 
     // Hide the add an athlete section of the page
-    addAthlete = document.getElementById('addAnAthleteSection');
+    const addAthlete = document.getElementById('addAnAthleteSection');
     addAthlete.style.display = 'none';
 
     // Show the athlete data section of the page
-    athleteDataSection = document.getElementById('athleteDataSection');
+    const athleteDataSection = document.getElementById('athleteDataSection');
     athleteDataSection.style.display = 'block';
 
     // Show athlete name on the screen
@@ -122,7 +128,7 @@ async function showAthleteData (athlete) {
     };
 
     addRaceClick();
-}
+};
 
 function addRaceClick () {
     const races = document.querySelectorAll('.race');
@@ -160,7 +166,7 @@ async function showRaceData (athlete, race) {
 
     const comments = document.getElementById('comments');
     comments.innerHTML = raceData.comments;
-}
+};
 
 function addButtonListners () {
     const addAnAthleteButton = document.getElementById('addAnAthleteButton');
