@@ -1,23 +1,23 @@
 const endpointRoot = 'http://127.0.0.1:8090/';
 
-async function listAthletes() {
-    const athletesResponse = await fetch(endpointRoot + 'athletes')
+async function listAthletes () {
+    const athletesResponse = await fetch(endpointRoot + 'athletes');
     const athletesKeysText = await athletesResponse.text();
     const athletesKeys = JSON.parse(athletesKeysText);
 
-    let athletesList = document.querySelector("#athleteList ul");
-    athletesList.innerHTML = "";
+    const athletesList = document.querySelector('#athleteList ul');
+    athletesList.innerHTML = '';
 
-    for (const athlete of athletesKeys){
-        let newAthlete = document.createElement('li')
+    for (const athlete of athletesKeys) {
+        const newAthlete = document.createElement('li');
         newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
-        newAthlete.setAttribute('id', athlete)
-        newAthlete.innerHTML = athlete
+        newAthlete.setAttribute('id', athlete);
+        newAthlete.innerHTML = athlete;
 
-        let spanElement = document.createElement('span')
-        spanElement.setAttribute('class', "badge bg-primary rounded-pill")
-        let numberOfRacesRequest = await fetch(endpointRoot + "athlete/numberOfRaces/" + athlete)
-        let numberOfRaces = await numberOfRacesRequest.text();
+        const spanElement = document.createElement('span');
+        spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
+        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
+        const numberOfRaces = await numberOfRacesRequest.text();
         spanElement.innerHTML = numberOfRaces + ' entries';
 
         newAthlete.appendChild(spanElement);
@@ -28,8 +28,8 @@ async function listAthletes() {
     addAthleteClick();
 };
 
-async function addAthlete() {
-    const athleteForm = document.getElementById("athleteSumbit");
+async function addAthlete () {
+    const athleteForm = document.getElementById('athleteSumbit');
     athleteForm.addEventListener('submit', async function (event) {
         event.preventDefault();
         const data = new FormData(athleteForm);
@@ -37,7 +37,7 @@ async function addAthlete() {
         const dataJSON = JSON.stringify(Object.fromEntries(data));
 
         const response = await fetch(endpointRoot + 'athlete/new', {
-            method: "POST",
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -48,7 +48,7 @@ async function addAthlete() {
     });
 };
 
-async function addRace() {
+async function addRace () {
     const raceForm = document.getElementById('raceSubmit');
     raceForm.addEventListener('submit', async function (event) {
         event.preventDefault();
@@ -56,74 +56,67 @@ async function addRace() {
 
         // Get athlete name
         const athleteName = document.getElementById('athleteName').innerHTML;
-        
+
         // Add data to FormData at https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
-        data.append('athleteName', athleteName)
-        
+        data.append('athleteName', athleteName);
 
         // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
         const dataJSON = JSON.stringify(Object.fromEntries(data));
 
-        const response = await fetch(endpointRoot + "newRace", {
-            method: "POST",
+        const response = await fetch(endpointRoot + 'newRace', {
+            method: 'POST',
             headers: {
-                'Content-Type': "application/json"
+                'Content-Type': 'application/json'
             },
             body: dataJSON
         });
-        showAthleteData(athleteName);
-        raceForm.reset()
-
-        // Hide the add new race section
-        addRaceSection = document.getElementById("addRaceSection");
-        addRaceSection.style.display = "none";
-
+        raceForm.reset();
     });
 }
 
-function addAthleteClick() {
-    let athletes = document.querySelectorAll(".athlete")
+function addAthleteClick () {
+    const athletes = document.querySelectorAll('.athlete');
 
     for (const athlete of athletes) {
-        athlete.addEventListener("click", () => showAthleteData(athlete.id));
+        athlete.addEventListener('click', () => showAthleteData(athlete.id));
     }
 }
 
-async function showAthleteData(athlete) {
+async function showAthleteData (athlete) {
     // Hide the athletes list section of the page
-    athleteList = document.getElementById("athletesListSection");
-    athleteList.style.display = "none";
+    athleteList = document.getElementById('athletesListSection');
+    athleteList.style.display = 'none';
 
     // Hide the add an athlete section of the page
-    addAthlete = document.getElementById("addAnAthleteSection");
-    addAthlete.style.display = "none";
+    addAthlete = document.getElementById('addAnAthleteSection');
+    addAthlete.style.display = 'none';
 
     // Show the athlete data section of the page
-    athleteDataSection = document.getElementById("athleteDataSection");
-    athleteDataSection.style.display = "block";
+    athleteDataSection = document.getElementById('athleteDataSection');
+    athleteDataSection.style.display = 'block';
 
     // Show athlete name on the screen
-    const athleteName = document.getElementById("athleteName");
+    const athleteName = document.getElementById('athleteName');
     athleteName.innerHTML = athlete;
 
-    athlete = athlete.split(" ")
+    athlete = athlete.split(' ');
 
     // Select the race date list
-    const raceResponse = await fetch(endpointRoot + "races/" + athlete[0] + "/" + athlete[1]);
+    const raceResponse = await fetch(endpointRoot + 'races/' + athlete[0] + '/' + athlete[1]);
     const racesText = await raceResponse.text();
     const races = JSON.parse(racesText);
-    
+
     // Add the athletes races to the page
-    let racesList = document.querySelector("#raceList ul");
+    const racesList = document.querySelector('#raceList ul');
 
     // Make sure list is empty to avoid adding duplicates
-    racesList.innerHTML = "";
+    racesList.innerHTML = '';
 
     for (const race of races) {
-        let newRace = document.createElement('li')
+        const newRace = document.createElement('li');
         newRace.setAttribute('class', 'race list-group-item list-group-item-action d-flex justify-content-between align-items-center');
-        newRace.setAttribute('id', race)
-        newRace.innerHTML = race
+        newRace.setAttribute('id', race);
+        newRace.innerHTML = race;
 
         racesList.appendChild(newRace);
     };
@@ -131,25 +124,25 @@ async function showAthleteData(athlete) {
     addRaceClick();
 }
 
-function addRaceClick(){
-    const races = document.querySelectorAll(".race")
-    const athlete = document.getElementById("athleteName").innerHTML
+function addRaceClick () {
+    const races = document.querySelectorAll('.race');
+    const athlete = document.getElementById('athleteName').innerHTML;
 
     for (const race of races) {
-        race.addEventListener('click', () => showRaceData(athlete, race.id))
+        race.addEventListener('click', () => showRaceData(athlete, race.id));
     };
 };
 
-async function showRaceData(athlete, race) {
+async function showRaceData (athlete, race) {
     // Hide the athlete data section
-    const athleteDataSection = document.getElementById("athleteDataSection");
-    athleteDataSection.style.display = "none"
+    const athleteDataSection = document.getElementById('athleteDataSection');
+    athleteDataSection.style.display = 'none';
 
     // Show the race data section
-    const raceDataSection = document.getElementById("raceDataSection");
-    raceDataSection.style.display = "block";
+    const raceDataSection = document.getElementById('raceDataSection');
+    raceDataSection.style.display = 'block';
 
-    const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + "/" + race);
+    const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + '/' + race);
     const raceResponseText = await raceResponse.text();
     const raceData = JSON.parse(raceResponseText);
 
@@ -157,75 +150,89 @@ async function showRaceData(athlete, race) {
     raceAthlete.innerHTML = athlete;
 
     const distance = document.getElementById('distance');
-    distance.innerHTML = raceData["distance"];
+    distance.innerHTML = raceData.distance;
 
     const time = document.getElementById('time');
-    time.innerHTML = raceData["finishingTime"];
+    time.innerHTML = raceData.time;
 
     const position = document.getElementById('position');
-    position.innerHTML = raceData["finishingPosition"];
+    position.innerHTML = raceData.position;
 
     const comments = document.getElementById('comments');
-    comments.innerHTML = raceData["comments"];
-
+    comments.innerHTML = raceData.comments;
 }
 
-function addButtonListners() {
-    const addAnAthleteButton = document.getElementById("addAnAthleteButton")
-    addAnAthleteButton.addEventListener("click", () => {
+function addButtonListners () {
+    const addAnAthleteButton = document.getElementById('addAnAthleteButton');
+    addAnAthleteButton.addEventListener('click', () => {
         // Show add an athlete section
-        const addAnAthleteSection = document.getElementById("addAnAthleteSection")
-        addAnAthleteSection.style.display = "block"
+        const addAnAthleteSection = document.getElementById('addAnAthleteSection');
+        addAnAthleteSection.style.display = 'block';
 
         // Hide athletes section
-        const athleteListSection = document.getElementById("athletesListSection");
-        athleteListSection.style.display = "none"
-    })
+        const athleteListSection = document.getElementById('athletesListSection');
+        athleteListSection.style.display = 'none';
+    });
 
-    const backToAthletesButton = document.getElementById("backToAthletesButton");
-    backToAthletesButton.addEventListener("click", () => {
+    const backToAthletesButton = document.getElementById('backToAthletesButton');
+    backToAthletesButton.addEventListener('click', () => {
         // Show athletes section
-        const athleteListSection = document.getElementById("athletesListSection");
-        athleteListSection.style.display = "block"
+        const athleteListSection = document.getElementById('athletesListSection');
+        athleteListSection.style.display = 'block';
 
         // Hide add an athlete section
-        const addAnAthleteSection = document.getElementById("addAnAthleteSection")
-        addAnAthleteSection.style.display = "none"
-    })
+        const addAnAthleteSection = document.getElementById('addAnAthleteSection');
+        addAnAthleteSection.style.display = 'none';
+    });
 
-    const backToAllAthletesButton2 = document.getElementById("backToAllAthletesButton2");
+    const backToAllAthletesButton2 = document.getElementById('backToAllAthletesButton2');
     backToAllAthletesButton2.addEventListener('click', () => {
         // Show athletes section
-        const athleteListSection = document.getElementById("athletesListSection");
-        athleteListSection.style.display = "block"
+        const athleteListSection = document.getElementById('athletesListSection');
+        athleteListSection.style.display = 'block';
 
         listAthletes();
 
         // Hide athlete data section
-        const athleteDataSection = document.getElementById("athleteDataSection")
-        athleteDataSection.style.display = "none"
+        const athleteDataSection = document.getElementById('athleteDataSection');
+        athleteDataSection.style.display = 'none';
     });
 
     const backToAthleteRaceData = document.getElementById('backToAthleteData');
     backToAthleteRaceData.addEventListener('click', () => {
         // Show athlete data section
-        const athleteDataSection = document.getElementById("athleteDataSection")
-        athleteDataSection.style.display = "block"
+        const athleteDataSection = document.getElementById('athleteDataSection');
+        athleteDataSection.style.display = 'block';
 
         // Hide race data section
         const raceDataSection = document.getElementById('raceDataSection');
-        raceDataSection.style.display = "none";
+        raceDataSection.style.display = 'none';
     });
 
-    const addRaceButton = document.getElementById('addRace')
+    const backToAthleteRaceData2 = document.getElementById('backToAthleteData2');
+    backToAthleteRaceData2.addEventListener('click', () => {
+        // Show athlete data section
+        const athleteDataSection = document.getElementById('athleteDataSection');
+        athleteDataSection.style.display = 'block';
+
+        // Get athlete name
+        const athleteName = document.getElementById('athleteName').innerHTML;
+        showAthleteData(athleteName);
+
+        // Hide add race section
+        const raceDataSection = document.getElementById('addRaceSection');
+        raceDataSection.style.display = 'none';
+    });
+
+    const addRaceButton = document.getElementById('addRace');
     addRaceButton.addEventListener('click', () => {
         // Show add race section
         const addRaceSection = document.getElementById('addRaceSection');
-        addRaceSection.style.display = "block"
+        addRaceSection.style.display = 'block';
 
         // Hide athlete data section
-        const athleteDataSection = document.getElementById("athleteDataSection")
-        athleteDataSection.style.display = "none"
+        const athleteDataSection = document.getElementById('athleteDataSection');
+        athleteDataSection.style.display = 'none';
     });
 }
 

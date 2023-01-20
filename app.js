@@ -26,7 +26,6 @@ app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
 app.post('/athlete/new', function (req, resp) {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
-    console.log(firstName, lastName);
 
     const name = firstName + ' ' + lastName;
     const numberOfRaces = 0;
@@ -68,8 +67,8 @@ app.post('/newRace', function (req, resp) {
 
     athletes[athleteName].races[raceName] = {
 distance,
-finishingTime: time,
-finishingPosition: position,
+time,
+position,
 comments
 };
 
