@@ -24,17 +24,26 @@ app.get('/athletes', function (req, resp) {
     resp.send(athleteKeys);
 });
 
+// GET root to return the number of races an athlete has competed in
 app.get('/athlete/numberOfRaces/:firstName/:secondName', function (req, resp) {
+    // Parse the URL encoded variables
     const firstName = req.params.firstName;
     const secondName = req.params.secondName;
 
-    const athleteID = firstName + " " + secondName
+    // Construct the athleteID
+    const athleteID = firstName + ' ' + secondName;
 
+    // Attempt to access athlete numberOfRaces data
     try {
         const athleteData = athletes[athleteID];
         const numberOfRaces = athleteData.numberOfRaces;
+
+        // Send response Content-Type: text/html
         resp.send('' + numberOfRaces);
+
+    // Athlete does not exist
     } catch (err) {
+        // 404 response code with error message
         // How to specify error code in Express? https://stackoverflow.com/questions/10563644/how-to-specify-http-error-code-using-express-js
         resp.status(404);
         resp.send('The requested athlete could not be found in the system');
@@ -45,15 +54,15 @@ app.post('/athlete/new', function (req, resp) {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
 
-    if (firstName === undefined || lastName == undefined) {
+    if (firstName === undefined || lastName === undefined) {
         resp.status(404);
-        resp.send('Athlete name is incomplete')
+        resp.send('Athlete name is incomplete');
     } else {
         const name = firstName + ' ' + lastName;
 
         if (Object.keys(athletes).includes(name)) {
             resp.status(404);
-            resp.send('Athlete is already in the data base')
+            resp.send('Athlete is already in the data base');
         } else {
             const numberOfRaces = 0;
 
