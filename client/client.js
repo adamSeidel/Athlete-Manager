@@ -19,10 +19,18 @@ async function listAthletes () {
         const spanElement = document.createElement('span');
         spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
 
-        const athleteName = athlete.split(" ")
+        const athleteName = athlete.split(' ');
         const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athleteName[0]}/${athleteName[1]}`);
         const numberOfRaces = await numberOfRacesRequest.text();
-        spanElement.innerHTML = numberOfRaces + ' entries';
+
+        // Deal with plural vs singular numberOfRaces
+        if (numberOfRaces === '1') {
+            // Singluar
+            spanElement.innerHTML = numberOfRaces + ' entry';
+        } else {
+            // Plural
+            spanElement.innerHTML = numberOfRaces + ' entries';
+        }
 
         newAthlete.appendChild(spanElement);
 
