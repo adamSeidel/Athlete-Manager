@@ -98,11 +98,8 @@ app.get('/athlete/:athleteID/:raceName', function (req, resp) {
     };
 });
 
-app.get('/races/:firstName/:secondName', function (req, resp) {
-    const firstName = req.params.firstName;
-    const secondName = req.params.secondName;
-
-    const athleteID = firstName + ' ' + secondName;
+app.get('/races/:athleteID', function (req, resp) {
+    const athleteID = req.params.athleteID;
 
     const races = Object.keys(athletes[athleteID].races);
 
@@ -111,7 +108,7 @@ app.get('/races/:firstName/:secondName', function (req, resp) {
 
 app.post('/newRace', function (req, resp) {
     const athleteName = req.body.athleteName;
-    const raceName = req.body.raceName;
+    const raceName = req.body.raceName.replace(" ", "-");
     const distance = req.body.distance;
     const time = req.body.time;
     const position = req.body.position;

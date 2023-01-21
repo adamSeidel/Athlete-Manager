@@ -19,10 +19,7 @@ async function listAthletes () {
         const spanElement = document.createElement('span');
         spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
 
-        console.log(athlete)
-        const athleteName = athlete.split(' ');
-
-        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athleteName}`);
+        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
         const numberOfRaces = await numberOfRacesRequest.text();
 
         // Deal with plural vs singular numberOfRaces
@@ -70,7 +67,7 @@ async function addRace () {
         const data = new FormData(raceForm);
 
         // Get athlete name
-        const athleteName = document.getElementById('athleteName').innerHTML;
+        const athleteName = document.getElementById('athleteName').innerHTML.replace(' ', '-');
 
         // Add data to FormData at https://developer.mozilla.org/en-US/docs/Web/API/FormData/append
         data.append('athleteName', athleteName);
@@ -113,12 +110,10 @@ async function showAthleteData (athlete) {
 
     // Show athlete name on the screen
     const athleteName = document.getElementById('athleteName');
-    athleteName.innerHTML = athlete;
-
-    athlete = athlete.split(' ');
+    athleteName.innerHTML = athlete.replace("-", " ");
 
     // Select the race date list
-    const raceResponse = await fetch(endpointRoot + 'races/' + athlete[0] + '/' + athlete[1]);
+    const raceResponse = await fetch(endpointRoot + 'races/' + athlete);
     const racesText = await raceResponse.text();
     const races = JSON.parse(racesText);
 
@@ -132,7 +127,7 @@ async function showAthleteData (athlete) {
         const newRace = document.createElement('li');
         newRace.setAttribute('class', 'race list-group-item list-group-item-action d-flex justify-content-between align-items-center');
         newRace.setAttribute('id', race);
-        newRace.innerHTML = race;
+        newRace.innerHTML = race.replace("-", " ");
 
         racesList.appendChild(newRace);
     };
@@ -158,7 +153,7 @@ async function showRaceData (athlete, race) {
     const raceDataSection = document.getElementById('raceDataSection');
     raceDataSection.style.display = 'block';
 
-    const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete + '/' + race);
+    const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete.replace(" ", "-") + '/' + race);
     const raceResponseText = await raceResponse.text();
     const raceData = JSON.parse(raceResponseText);
 
