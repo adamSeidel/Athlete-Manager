@@ -14,13 +14,15 @@ async function listAthletes () {
         const newAthlete = document.createElement('li');
         newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
         newAthlete.setAttribute('id', athlete);
-        newAthlete.innerHTML = athlete;
+        newAthlete.innerHTML = athlete.replace("-", " ");
 
         const spanElement = document.createElement('span');
         spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
 
+        console.log(athlete)
         const athleteName = athlete.split(' ');
-        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athleteName[0]}/${athleteName[1]}`);
+
+        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athleteName}`);
         const numberOfRaces = await numberOfRacesRequest.text();
 
         // Deal with plural vs singular numberOfRaces
