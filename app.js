@@ -26,6 +26,7 @@ app.get('/athletes', function (req, resp) {
     const athleteKeys = Object.keys(athletes);
 
     // Send the array of athlete names as response
+    resp.status(200)
     resp.send(athleteKeys);
 });
 
@@ -65,7 +66,7 @@ app.post('/athlete/new', function (req, resp) {
     } else {
         // Parameters provided
         
-        const name = firstName + ' ' + lastName;
+        const name = firstName + '-' + lastName;
 
         if (Object.keys(athletes).includes(name)) {
             resp.status(404);
@@ -76,7 +77,8 @@ app.post('/athlete/new', function (req, resp) {
             athletes[name] = { numberOfRaces, races: {} };
             fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
 
-            resp.send(athletes);
+            resp.status(200)
+            resp.send('Athlete added sucessfully');
         };
     };
 });

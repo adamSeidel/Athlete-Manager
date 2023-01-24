@@ -3,10 +3,21 @@
 const endpointRoot = 'http://127.0.0.1:8090/';
 
 async function listAthletes () {
-    const athletesResponse = await fetch(endpointRoot + 'athletes');
-    const athletesKeysText = await athletesResponse.text();
-    const athletesKeys = JSON.parse(athletesKeysText);
+    let athletesKeysText;
+    try {
+        const athletesResponse = await fetch(endpointRoot + 'athletes');
+        athletesKeysText = await athletesResponse.text();
 
+        if (!athletesResponse.ok) {
+            throw new Error();
+        }
+    } catch(e) {
+        console.log(e)
+        const athletesListSectionMessage = document.getElementById('athletesListSectionMessage');
+        athletesListSectionMessage.innerHTML = 'Could not fetch athlete data';
+    }
+
+    const athletesKeys = JSON.parse(athletesKeysText);
     const athletesList = document.querySelector('#athleteList ul');
     athletesList.innerHTML = '';
 
@@ -160,16 +171,16 @@ async function showRaceData (athlete, race) {
     const raceAthlete = document.getElementById('raceAthlete');
     raceAthlete.innerHTML = athlete;
 
-    const distance = document.getElementById('distance');
+    const distance = document.getElementById('displayDistance');
     distance.innerHTML = raceData.distance;
 
-    const time = document.getElementById('time');
+    const time = document.getElementById('displayTime');
     time.innerHTML = raceData.time;
 
-    const position = document.getElementById('position');
+    const position = document.getElementById('displayPosition');
     position.innerHTML = raceData.position;
 
-    const comments = document.getElementById('comments');
+    const comments = document.getElementById('displayComments');
     comments.innerHTML = raceData.comments;
 };
 
@@ -227,7 +238,7 @@ function addButtonListners () {
         athleteDataSection.style.display = 'block';
 
         // Get athlete name
-        const athleteName = document.getElementById('athleteName').innerHTML;
+        const athleteName = document.getElementById('athleteName').innerHTML.replace(" ", "-");
         showAthleteData(athleteName);
 
         // Hide add race section

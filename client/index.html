@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="'en">
+<html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width", initial-scale="1">
+        <meta name="viewport" content="width=device-width initial-scale=1">
         <meta name="description" content="Athlete Manager">
         <meta name="keywords" content="Athletes, Coaches, Races">
         <meta name="author" content="Adam Seidel">
@@ -51,6 +51,8 @@
                         <ul class="list-group">
                         </ul>
                     </div>
+
+                    <p id="athletesListSectionMessage" class="text-danger"></p>
 
                     <button id="addAnAthleteButton" class="btn btn-primary col-7">Add an Athlete</button>
 
@@ -106,19 +108,19 @@
                             </tr>
                             <tr>
                                 <th scope="row">Distance</th>
-                                <td id="distance"></td>
+                                <td id="displayDistance"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Time</th>
-                                <td id="time"></td>
+                                <td id="displayTime"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Position</th>
-                                <td id="position"></td>
+                                <td id="displayPosition"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Comments</th>
-                                <td id="comments"></td>
+                                <td id="displayComments"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -149,11 +151,11 @@
                         <div class="mb-3">
                             <label for="position" class="form-label">Position</label>
                             <input name="position" type="text" class="form-control" id="position" aria-describedby="positionHelp" placeholder="1st">
-                            <div id="positonHelp" class="form-text">Enter the position of the new race</div>
+                            <div id="positionHelp" class="form-text">Enter the position of the new race</div>
                         </div>
                         <div class="mb-3">
                             <label for="comments" class="form-label">Comments</label>
-                            <textarea name="comments" type="text" class="form-control" id="comments" aria-describedby="commentsHelp" placeholder="Brilliant start to the race. Quick out of the blocks and driving nicely at 30m."></textarea>
+                            <textarea name="comments" class="form-control" id="comments" aria-describedby="commentsHelp" placeholder="Brilliant start to the race. Quick out of the blocks and driving nicely at 30m."></textarea>
                             <div id="commentsHelp" class="form-text">Enter any comments about the race</div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
