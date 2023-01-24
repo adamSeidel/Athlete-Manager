@@ -6,69 +6,92 @@ async function listAthletes () {
     let athletesKeysText;
     try {
         const athletesResponse = await fetch(endpointRoot + 'athletes');
-        athletesKeysText = await athletesResponse.text();
 
         if (!athletesResponse.ok) {
             throw new Error();
         }
-    } catch(e) {
-        console.log(e)
+        
+        athletesKeysText = await athletesResponse.text();
+
+        const athletesKeys = JSON.parse(athletesKeysText);
+        const athletesList = document.querySelector('#athleteList ul');
+        athletesList.innerHTML = '';
+
+        for (const athlete of athletesKeys) {
+            const newAthlete = document.createElement('li');
+            newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
+            newAthlete.setAttribute('id', athlete);
+            newAthlete.innerHTML = athlete.replace("-", " ");
+
+            const spanElement = document.createElement('span');
+            spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
+
+            const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
+
+            if (!numberOfRacesRequest.ok) {
+                throw new Error();
+            }
+
+            const numberOfRaces = await numberOfRacesRequest.text();
+
+            // Deal with plural vs singular numberOfRaces
+            if (numberOfRaces === '1') {
+                // Singluar
+                spanElement.innerHTML = numberOfRaces + ' entry';
+            } else {
+                // Plural
+                spanElement.innerHTML = numberOfRaces + ' entries';
+            }
+
+            newAthlete.appendChild(spanElement);
+
+            athletesList.appendChild(newAthlete);
+        };
+
+        addAthleteClick();
+    } catch (e) {
         const athletesListSectionMessage = document.getElementById('athletesListSectionMessage');
         athletesListSectionMessage.innerHTML = 'Could not fetch athlete data';
     }
-
-    const athletesKeys = JSON.parse(athletesKeysText);
-    const athletesList = document.querySelector('#athleteList ul');
-    athletesList.innerHTML = '';
-
-    for (const athlete of athletesKeys) {
-        const newAthlete = document.createElement('li');
-        newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
-        newAthlete.setAttribute('id', athlete);
-        newAthlete.innerHTML = athlete.replace("-", " ");
-
-        const spanElement = document.createElement('span');
-        spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
-
-        const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
-        const numberOfRaces = await numberOfRacesRequest.text();
-
-        // Deal with plural vs singular numberOfRaces
-        if (numberOfRaces === '1') {
-            // Singluar
-            spanElement.innerHTML = numberOfRaces + ' entry';
-        } else {
-            // Plural
-            spanElement.innerHTML = numberOfRaces + ' entries';
-        }
-
-        newAthlete.appendChild(spanElement);
-
-        athletesList.appendChild(newAthlete);
-    };
-
-    addAthleteClick();
 };
 
 async function addAthlete () {
-    const athleteForm = document.getElementById('athleteSumbit');
-    athleteForm.addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const data = new FormData(athleteForm);
-        // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
-        const dataJSON = JSON.stringify(Object.fromEntries(data));
+        const athleteForm = document.getElementById('athleteSumbit');
+        athleteForm.addEventListener('submit', async function (event) {
+            try {
+                event.preventDefault();
+                const data = new FormData(athleteForm);
+                // conversion from FormData to JSON at https://stackoverflow.com/questions/41431322/how-to-convert-formdata-html5-object-to-json //
+                const dataJSON = JSON.stringify(Object.fromEntries(data));
 
-        // eslint-disable-next-line no-unused-vars
-        const response = await fetch(endpointRoot + 'athlete/new', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: dataJSON
+                // eslint-disable-next-line no-unused-vars
+                const response = await fetch(endpointRoot + 'athlete/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: dataJSON
+                });
+
+                if (!response.ok) {
+                    throw new Error();
+                }
+
+                listAthletes();
+                athleteForm.reset();
+
+                const userMessage = await response.text()
+                console.log(userMessage);
+
+                const addAthleteMessage = document.getElementById('addAthleteMessage');
+                addAthleteMessage.innerHTML = userMessage
+                addAthleteMessage.setAttribute('class', 'text-success')
+            } catch (e) {
+                const addAthleteMessage = document.getElementById('addAthleteMessage');
+                addAthleteMessage.innerHTML = "Unable to add athlete"
+                addAthleteMessage.setAttribute('class', 'text-success')
+            };
         });
-        listAthletes();
-        athleteForm.reset();
-    });
 };
 
 async function addRace () {

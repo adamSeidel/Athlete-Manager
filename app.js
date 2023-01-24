@@ -60,24 +60,23 @@ app.post('/athlete/new', function (req, resp) {
 
     // Ensure both parameters were provided
     if (firstName === undefined || lastName === undefined) {
-        // Parameters not provided 404
-        resp.status(404);
-        resp.send('Athlete name is incomplete');
+        // Parameters not provided
+        resp.status(200);
+        resp.send('Athlete not added: Athlete name is incomplete');
     } else {
         // Parameters provided
-        
         const name = firstName + '-' + lastName;
 
         if (Object.keys(athletes).includes(name)) {
-            resp.status(404);
-            resp.send('Athlete is already in the data base');
+            resp.status(200);
+            resp.send('Athlete not added: Athlete is already in the data base');
         } else {
             const numberOfRaces = 0;
 
             athletes[name] = { numberOfRaces, races: {} };
             fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
 
-            resp.status(200)
+            resp.status(200);
             resp.send('Athlete added sucessfully');
         };
     };
