@@ -1,3 +1,4 @@
+/* Initally hide all sections of the page apart from the Athlete list section */
 #athleteDataSection {
     display: none;
 }
