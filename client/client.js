@@ -335,6 +335,11 @@ async function showRaceData (athlete, race) {
         const raceResponseText = await raceResponse.text();
         const raceData = JSON.parse(raceResponseText);
 
+        // Display the name of the race on the screen
+        const raceName = document.getElementById('raceName');
+        // Remove '-' used for storage
+        raceName.innerHTML = race.replace('-', ' ');
+
         // Display athlete name on the screen
         const raceAthlete = document.getElementById('raceAthlete');
         raceAthlete.innerHTML = athlete;
