@@ -332,6 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addRace();
     addButtonListners();
 })
+
 // document.addEventListener('DOMContentLoaded', listAthletes);
 // document.addEventListener('DOMContentLoaded', addAthlete);
 // document.addEventListener('DOMContentLoaded', addRace);

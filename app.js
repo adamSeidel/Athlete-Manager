@@ -26,7 +26,7 @@ app.get('/athletes', function (req, resp) {
     const athleteKeys = Object.keys(athletes);
 
     // Send the array of athlete names as response
-    resp.status(200)
+    resp.status(200);
     resp.send(athleteKeys);
 });
 
@@ -61,7 +61,7 @@ app.post('/athlete/new', function (req, resp) {
     // Ensure both parameters were provided
     if (firstName === undefined || lastName === undefined) {
         // Parameters not provided
-        resp.status(200);
+        resp.status(404);
         resp.send('Athlete not added: Athlete name is incomplete');
     } else {
         // Parameters provided
@@ -92,7 +92,7 @@ app.get('/athlete/:athleteID/:raceName', function (req, resp) {
         const race = raceData[raceName];
         resp.status(200);
         resp.send(race);
-        
+
     // Race does not exist
     } catch (err) {
         // 200 response code with error messgae
@@ -111,7 +111,7 @@ app.get('/races/:athleteID', function (req, resp) {
 
 app.post('/newRace', function (req, resp) {
     const athleteName = req.body.athleteName;
-    const raceName = req.body.raceName.replace(" ", "-");
+    const raceName = req.body.raceName.replace(' ', '-');
     const distance = req.body.distance;
     const time = req.body.time;
     const position = req.body.position;
@@ -128,7 +128,7 @@ comments
 
     fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
 
-    resp.status(200)
+    resp.status(200);
     resp.send('Race added sucesfully');
 });
 

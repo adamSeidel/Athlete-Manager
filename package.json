@@ -4,6 +4,7 @@
   "description": "A system for coaches to manage there athletes and there performances",
   "main": "app.js",
   "scripts": {
+    "pretest": "eslint app.js server.js ./client/client.js",
     "start": "nodemon server.js",
     "test": "jest"
   },
