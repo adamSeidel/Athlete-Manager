@@ -1,2 +1,1 @@
-// JSON file that stores all athlete data
 {"Adam-Seidel":{"numberOfRaces":4,"races":{"Boston-Marathon":{"distance":"42km","time":"3hours 24mins","position":"500th","comments":"Started off too quickly and then struggled later on in the race. Need to work on race pacing. Suggest doing some Yasso 800m workouts."},"Tokyo-Marathon":{"distance":"22km","time":"30mins","position":"74th","comments":"Happy with this race."}}},"David-Boam":{"numberOfRaces":0,"races":{}}}

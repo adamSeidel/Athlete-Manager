@@ -2,7 +2,7 @@
 'use strict';
 
 // Local host end point root
-const endpointRoot = 'http://127.0.0.1:8090/';
+const endpointRoot = 'http://127.0.0.1:8080/';
 
 // Display the athletes on the page
 async function listAthletes () {
