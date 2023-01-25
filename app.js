@@ -90,11 +90,13 @@ app.get('/athlete/:athleteID/:raceName', function (req, resp) {
     try {
         const raceData = athletes[athlete].races;
         const race = raceData[raceName];
+        resp.status(200);
         resp.send(race);
+        
     // Race does not exist
     } catch (err) {
-        // 404 response code with error messgae
-        resp.status(404);
+        // 200 response code with error messgae
+        resp.status(200);
         resp.send('Race not found');
     };
 });
@@ -125,7 +127,9 @@ comments
     athletes[athleteName].numberOfRaces += 1;
 
     fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
-    resp.send(athletes);
+
+    resp.status(200)
+    resp.send('Race added sucesfully');
 });
 
 module.exports = app;
