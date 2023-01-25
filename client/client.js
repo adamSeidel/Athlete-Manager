@@ -278,7 +278,7 @@ async function showAthleteData (athlete) {
     } catch (e) {
         // Display error message to the user
         const athleteDataMessage = document.getElementById('athleteDataMessage');
-        athleteDataMessage.innerHTML = 'Unable to show athletes data';
+        athleteDataMessage.innerHTML = 'Server Error: Unable to show athletes data';
         // Red error message
         athleteDataMessage.setAttribute('class', 'text-danger');
     };
@@ -360,11 +360,15 @@ async function showRaceData (athlete, race) {
         const comments = document.getElementById('displayComments');
         comments.innerHTML = raceData.comments;
 
+        // Clear message section
+        const raceDataMessage = document.getElementById('raceDataMessage');
+        raceDataMessage.innerHTML = '';
+
     // Deal with errors / 404
     } catch (e) {
         // Display error message on the page
         const raceDataMessage = document.getElementById('raceDataMessage');
-        raceDataMessage.innerHTML = 'Unable to display race data';
+        raceDataMessage.innerHTML = 'Server Error: Unable to display race data';
         raceDataMessage.setAttribute('class', 'text-danger');
     }
 };

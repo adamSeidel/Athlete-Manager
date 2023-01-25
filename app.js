@@ -101,7 +101,7 @@ app.post('/athlete/new', function (req, resp) {
 
             // Send valid response
             resp.status(200);
-            resp.send('Athlete added sucessfully');
+            resp.send('Athlete added successfully');
         };
     };
 });
