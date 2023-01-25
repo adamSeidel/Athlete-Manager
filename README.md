@@ -1,1 +1,2 @@
 # Athlete-Manager
+An athlete management system to allow coaches to track their athletes’ performances in races. Coaches can add new athletes to the system, view athletes’ performances and add new performances.
