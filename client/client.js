@@ -2,18 +2,19 @@
 
 const endpointRoot = 'http://127.0.0.1:8090/';
 
-// Error handling applied
+// Error handling applied - happy
 async function listAthletes () {
     try {
         const athletesResponse = await fetch(endpointRoot + 'athletes');
 
         if (!athletesResponse.ok) {
-            throw new Error();
+            throw new Error(await athletesResponse.text());
         }
-        
-        let athletesKeysText = await athletesResponse.text();
+
+        const athletesKeysText = await athletesResponse.text();
 
         const athletesKeys = JSON.parse(athletesKeysText);
+
         const athletesList = document.querySelector('#athleteList ul');
         athletesList.innerHTML = '';
 
@@ -21,7 +22,7 @@ async function listAthletes () {
             const newAthlete = document.createElement('li');
             newAthlete.setAttribute('class', 'athlete list-group-item list-group-item-action d-flex justify-content-between align-items-center');
             newAthlete.setAttribute('id', athlete);
-            newAthlete.innerHTML = athlete.replace("-", " ");
+            newAthlete.innerHTML = athlete.replace('-', ' ');
 
             const spanElement = document.createElement('span');
             spanElement.setAttribute('class', 'badge bg-primary rounded-pill');
@@ -29,7 +30,7 @@ async function listAthletes () {
             const numberOfRacesRequest = await fetch(`${endpointRoot}athlete/numberOfRaces/${athlete}`);
 
             if (!numberOfRacesRequest.ok) {
-                throw new Error();
+                throw new Error(await numberOfRacesRequest.text());
             }
 
             const numberOfRaces = await numberOfRacesRequest.text();
@@ -51,7 +52,14 @@ async function listAthletes () {
         addAthleteClick();
     } catch (e) {
         const athletesListSectionMessage = document.getElementById('athletesListSectionMessage');
-        athletesListSectionMessage.innerHTML = 'Could not fetch athlete data';
+
+        // Catching a TypeError https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError
+        if (e instanceof TypeError) {
+            // eslint-disable-next-line no-ex-assign
+            e = 'Server connection error: Unable to access athlete data';
+        }
+
+        athletesListSectionMessage.innerHTML = e;
     }
 };
 
@@ -75,26 +83,32 @@ async function addAthlete () {
                 });
 
                 if (!response.ok) {
-                    throw new Error();
+                    throw new Error(await response.text());
                 }
 
                 listAthletes();
                 athleteForm.reset();
 
-                const userMessage = await response.text()
+                const userMessage = await response.text();
 
                 const addAthleteMessage = document.getElementById('addAthleteMessage');
-                addAthleteMessage.innerHTML = userMessage
-                addAthleteMessage.setAttribute('class', 'text-success')
+                addAthleteMessage.innerHTML = userMessage;
+                addAthleteMessage.setAttribute('class', 'text-success');
             } catch (e) {
                 const addAthleteMessage = document.getElementById('addAthleteMessage');
-                addAthleteMessage.innerHTML = "Unable to add athlete"
-                addAthleteMessage.setAttribute('class', 'text-success')
+
+                if (e instanceof TypeError) {
+                    // eslint-disable-next-line no-ex-assign
+                    e = 'Server connection error: Unable to add new athlete';
+                }
+
+                addAthleteMessage.innerHTML = e;
+                addAthleteMessage.setAttribute('class', 'text-danger');
             };
         });
 };
 
-// Error handling applied
+// Error handling applied - happy
 async function addRace () {
     const raceForm = document.getElementById('raceSubmit');
     raceForm.addEventListener('submit', async function (event) {
@@ -119,19 +133,24 @@ async function addRace () {
                 },
                 body: dataJSON
             });
+
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+
             raceForm.reset();
 
-
-            const userMessage = await response.text()
+            const userMessage = await response.text();
+            console.log(userMessage);
 
             const addRaceMessage = document.getElementById('addRaceMessage');
-            addRaceMessage.innerHTML = userMessage
-            addRaceMessage.setAttribute('class', 'text-success')
-
+            addRaceMessage.innerHTML = userMessage;
+            addRaceMessage.setAttribute('class', 'text-success');
         } catch (e) {
             const addRaceMessage = document.getElementById('addRaceMessage');
-            addRaceMessage.innerHTML = "Unable to add race"
-            addRaceMessage.setAttribute('class', 'text-success')
+            console.log(e);
+            addRaceMessage.innerHTML = e;
+            addRaceMessage.setAttribute('class', 'text-danger');
         }
     });
 }
@@ -162,13 +181,13 @@ async function showAthleteData (athlete) {
 
         // Show athlete name on the screen
         const athleteName = document.getElementById('athleteName');
-        athleteName.innerHTML = athlete.replace("-", " ");
+        athleteName.innerHTML = athlete.replace('-', ' ');
 
         // Select the race date list
         const raceResponse = await fetch(endpointRoot + 'races/' + athlete);
 
         if (!raceResponse.ok) {
-            throw new Error()
+            throw new Error();
         }
         const racesText = await raceResponse.text();
         const races = JSON.parse(racesText);
@@ -183,7 +202,7 @@ async function showAthleteData (athlete) {
             const newRace = document.createElement('li');
             newRace.setAttribute('class', 'race list-group-item list-group-item-action d-flex justify-content-between align-items-center');
             newRace.setAttribute('id', race);
-            newRace.innerHTML = race.replace("-", " ");
+            newRace.innerHTML = race.replace('-', ' ');
 
             racesList.appendChild(newRace);
         };
@@ -191,11 +210,11 @@ async function showAthleteData (athlete) {
         addRaceClick();
 
         const athleteDataMessage = document.getElementById('athleteDataMessage');
-        athleteDataMessage.innerHTML = ""
+        athleteDataMessage.innerHTML = '';
     } catch (e) {
         const athleteDataMessage = document.getElementById('athleteDataMessage');
-        athleteDataMessage.innerHTML = "Unable to show athletes data"
-        athleteDataMessage.setAttribute('class', 'text-danger')
+        athleteDataMessage.innerHTML = 'Unable to show athletes data';
+        athleteDataMessage.setAttribute('class', 'text-danger');
     }
 };
 
@@ -220,7 +239,7 @@ async function showRaceData (athlete, race) {
         const raceDataSection = document.getElementById('raceDataSection');
         raceDataSection.style.display = 'block';
 
-        const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete.replace(" ", "-") + '/' + race);
+        const raceResponse = await fetch(endpointRoot + 'athlete/' + athlete.replace(' ', '-') + '/' + race);
 
         if (!raceResponse.ok) {
           throw new Error();
@@ -243,11 +262,10 @@ async function showRaceData (athlete, race) {
 
         const comments = document.getElementById('displayComments');
         comments.innerHTML = raceData.comments;
-
     } catch (e) {
         const raceDataMessage = document.getElementById('raceDataMessage');
-        raceDataMessage.innerHTML = "Unable to display race data"
-        raceDangerMessage.setAttribute('class', 'text-danger')
+        raceDataMessage.innerHTML = 'Unable to display race data';
+        raceDataMessage.setAttribute('class', 'text-danger');
     }
 };
 
@@ -306,7 +324,7 @@ function addButtonListners () {
         athleteDataSection.style.display = 'block';
 
         // Get athlete name
-        const athleteName = document.getElementById('athleteName').innerHTML.replace(" ", "-");
+        const athleteName = document.getElementById('athleteName').innerHTML.replace(' ', '-');
         showAthleteData(athleteName);
 
         // Hide add race section
@@ -326,12 +344,13 @@ function addButtonListners () {
     });
 }
 
+// No await
 document.addEventListener('DOMContentLoaded', () => {
     listAthletes();
     addAthlete();
     addRace();
     addButtonListners();
-})
+});
 
 // document.addEventListener('DOMContentLoaded', listAthletes);
 // document.addEventListener('DOMContentLoaded', addAthlete);

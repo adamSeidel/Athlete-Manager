@@ -21,16 +21,23 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'client')));
 
 // GET root to return the names of all athletes
+// Full tests and includes Content Type and HTTP codes
 app.get('/athletes', function (req, resp) {
-    // Create array of all keys in the athlets JSON file
-    const athleteKeys = Object.keys(athletes);
+    try {
+        // Create array of all keys in the athlets JSON file
+        const athleteKeys = Object.keys(athletes);
 
-    // Send the array of athlete names as response
-    resp.status(200);
-    resp.send(athleteKeys);
+        // Send the array of athlete names as response
+        resp.status(200);
+        resp.send(athleteKeys);
+    } catch (e) {
+        resp.status(404);
+        resp.send('Unable to access athletes data');
+    }
 });
 
 // GET root to return the number of races an athlete has competed in
+// Full tests and includes Content Type and HTTP codes
 app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
     // Parse the URL encoded variables
     const athleteID = req.params.athleteID;
@@ -41,6 +48,7 @@ app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
         const numberOfRaces = athleteData.numberOfRaces;
 
         // Send response Content-Type: text/html
+        resp.status(200);
         resp.send('' + numberOfRaces);
 
     // Athlete does not exist
@@ -53,23 +61,25 @@ app.get('/athlete/numberOfRaces/:athleteID', function (req, resp) {
 });
 
 // POST root to make new athlete
+// Full tests and includes content type and HTTP codes
 app.post('/athlete/new', function (req, resp) {
     // Extract body parameters
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
 
     // Ensure both parameters were provided
-    if (firstName === undefined || lastName === undefined) {
+    if (firstName === undefined || lastName === undefined ||
+        firstName === '' || lastName === '') {
         // Parameters not provided
         resp.status(404);
-        resp.send('Athlete not added: Athlete name is incomplete');
+        resp.send('Athlete name is incomplete');
     } else {
         // Parameters provided
         const name = firstName + '-' + lastName;
 
         if (Object.keys(athletes).includes(name)) {
-            resp.status(200);
-            resp.send('Athlete not added: Athlete is already in the data base');
+            resp.status(404);
+            resp.send('Athlete is already in the data base');
         } else {
             const numberOfRaces = 0;
 
@@ -82,6 +92,7 @@ app.post('/athlete/new', function (req, resp) {
     };
 });
 
+// GET root to return details of a race
 app.get('/athlete/:athleteID/:raceName', function (req, resp) {
     const athlete = req.params.athleteID;
     const raceName = req.params.raceName;
@@ -94,42 +105,79 @@ app.get('/athlete/:athleteID/:raceName', function (req, resp) {
         resp.send(race);
 
     // Race does not exist
-    } catch (err) {
+    } catch (e) {
         // 200 response code with error messgae
-        resp.status(200);
+        resp.status(404);
         resp.send('Race not found');
     };
 });
 
+// GET root to return a specific athletes races
 app.get('/races/:athleteID', function (req, resp) {
-    const athleteID = req.params.athleteID;
+    try {
+        const athleteID = req.params.athleteID;
 
-    const races = Object.keys(athletes[athleteID].races);
+        const races = Object.keys(athletes[athleteID].races);
 
-    resp.send(races);
+        resp.status(200);
+        resp.send(races);
+    } catch (e) {
+        resp.status(404);
+        resp.send('Athlete does not exist');
+    }
 });
 
+// POST root to add a new race
 app.post('/newRace', function (req, resp) {
-    const athleteName = req.body.athleteName;
-    const raceName = req.body.raceName.replace(' ', '-');
-    const distance = req.body.distance;
-    const time = req.body.time;
-    const position = req.body.position;
-    const comments = req.body.comments;
+    try {
+        const athleteName = req.body.athleteName;
+        const raceName = req.body.raceName.replace(' ', '-');
+        const distance = req.body.distance;
+        const time = req.body.time;
+        const position = req.body.position;
+        const comments = req.body.comments;
 
-    athletes[athleteName].races[raceName] = {
-distance,
-time,
-position,
-comments
-};
+        if (athleteName === undefined || athleteName === '') {
+            throw new Error();
+        }
 
-    athletes[athleteName].numberOfRaces += 1;
+        if (raceName === undefined || raceName === '') {
+            throw new Error();
+        }
 
-    fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
+        if (distance === undefined || distance === '') {
+            throw new Error();
+        }
 
-    resp.status(200);
-    resp.send('Race added sucesfully');
+        if (time === undefined || time === '') {
+            throw new Error();
+        }
+
+        if (position === undefined || position === '') {
+            throw new Error();
+        }
+
+        if (comments === undefined || comments === '') {
+            throw new Error();
+        }
+
+        athletes[athleteName].races[raceName] = {
+    distance,
+    time,
+    position,
+    comments
+    };
+
+        athletes[athleteName].numberOfRaces += 1;
+
+        fs.writeFileSync(fileNameForJSON, JSON.stringify(athletes));
+
+        resp.status(200);
+        resp.send('Race added sucesfully');
+    } catch (e) {
+        resp.status(404);
+        resp.send('New race details are invalid');
+    }
 });
 
 module.exports = app;
