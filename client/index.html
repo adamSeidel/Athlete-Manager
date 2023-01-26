@@ -28,12 +28,12 @@
             <main>
                 <h1>About the Athlete Manager System</h1>
                 <div class="row align-items-center mb-5">
-                    <div class="col-6">
+                    <div class="col-md-6">
 
                         <!--Royalty free image under the Unsplash License https://unsplash.com/photos/j8fVoo3i8xk-->
                         <img src="assets/images/running-track.jpg" class="img-fluid" alt="A running track">
                     </div>
-                    <div class="col-6">
+                    <div class="col-md-6 mt-5 mt-md-0">
                         <p class=fs-5>The Athlete Manager System was built to allow coaches to easily manage their athletes and also track their performances.
                             Using this system coaches can view all athletes, select individual athletes, view their latest events, add new athletes and add
                             performances.
@@ -47,14 +47,14 @@
                     <h2>Athletes:</h2>
                     <p>Click on an athlete to see their performance history.</p>
 
-                    <div id="athleteList" class="col-6 mb-5">
+                    <div id="athleteList" class="col-md-12 col-lg-6 mb-5">
                         <ul class="list-group">
                         </ul>
                     </div>
 
                     <p id="athletesListSectionMessage" class="text-danger"></p>
 
-                    <button id="addAnAthleteButton" class="btn btn-primary col-7">Add an Athlete</button>
+                    <button id="addAnAthleteButton" class="btn btn-primary col-md-12 col-lg-6">Add an Athlete</button>
 
                 </div>
 
@@ -63,7 +63,7 @@
                     <h2>Add an athlete</h2>
                     <p>Add a new athlete to the database.</p>
 
-                    <form id="athleteSumbit" class="col-6 mb-5">
+                    <form id="athleteSumbit" class="col-md-6 col-lg-6 mb-5">
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
                             <input name="firstName" type="text" class="form-control" id="firstName" aria-describedby="firstNameHelp">
@@ -79,7 +79,7 @@
 
                     <p id="addAthleteMessage"></p>
 
-                    <button id="backToAthletesButton" class="btn btn-primary col-4">Back to all Athletes</button>
+                    <button id="backToAthletesButton" class="btn btn-primary col-lg-6 col-md-12">Back to all Athletes</button>
                 </div>
 
                 <div id="athleteDataSection" class="row">
@@ -87,16 +87,16 @@
                     <h2>Athlete Data: <span id="athleteName"></span></h2>
                     <p>Click on a race to view more details</p>
 
-                    <div id="raceList" class="col-6 mb-5">
+                    <div id="raceList" class="col-md-12 col-lg-6 mb-5">
                         <ul class="list-group">
                         </ul>
                     </div>
 
                     <p id="athleteDataMessage"></p>
 
-                    <button id="addRace" class="btn btn-primary col-6 mb-3">Add a Race</button>
+                    <button id="addRace" class="btn btn-primary col-md-12 col-lg-6 mb-3">Add a Race</button>
 
-                    <button id="backToAllAthletesButton2" class="btn btn-primary col-6">View all Athletes</button>
+                    <button id="backToAllAthletesButton2" class="btn btn-primary col-lg-6 col-md-12">View all Athletes</button>
                 </div>
 
                 <div id="raceDataSection" class="row">
@@ -130,7 +130,7 @@
 
                     <p id="raceDataMessage"></p>
 
-                    <button id="backToAthleteData" class="btn btn-primary col-6">Back to Athlete Race Data</button>
+                    <button id="backToAthleteData" class="btn btn-primary col-md-12 col-lg-6">Back to Athlete Race Data</button>
                 </div>
 
                 <div id="addRaceSection" class="row">
